@@ -21,6 +21,16 @@ public_users.post("/register", (req,res) => {
 });
 
 // Get the book list available in the shop
+public_users.get('/async-get-books',function (req, res) {
+    let p=new Promise((resolve,reject)=>{
+        resolve(res.send(JSON.stringify(books,null,4)));
+    });
+    p.then(()=>
+    {
+        console.log("Promise for Task 10 is resolved.");
+    })
+});
+
 public_users.get('/',function (req, res) {
     res.send(JSON.stringify(books,null,4));
 });
@@ -29,7 +39,16 @@ public_users.get('/',function (req, res) {
 public_users.get('/isbn/:isbn',function (req, res) {
   res.send(books[req.params.isbn]);
  });
-  
+
+ public_users.get('/async-isbn/:isbn',function (req, res) {
+    let p=new Promise((resolve,reject)=>{
+        resolve(res.send(books[req.params.isbn]));
+    });
+    p.then(()=>
+    {
+        console.log("Promise for Task 11 is resolved.");
+    })
+   });
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   for(let key of Object.keys(books))
@@ -41,6 +60,21 @@ public_users.get('/author/:author',function (req, res) {
   }
 });
 
+public_users.get('/async-author/:author',function (req, res) {
+    let p=new Promise((resolve,reject)=>{
+        for(let key of Object.keys(books))
+        {
+            if(books[key].author===req.params.author)
+            {
+                resolve(res.send(books[key]));
+            }
+        }
+    });
+    p.then(()=>
+    {
+        console.log("Promise for Task 12 is resolved.");
+    })
+   });
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     for(let key of Object.keys(books))
@@ -52,6 +86,21 @@ public_users.get('/title/:title',function (req, res) {
     }
 });
 
+public_users.get('/async-title/:title',function (req, res) {
+    let p=new Promise((resolve,reject)=>{
+        for(let key of Object.keys(books))
+        {
+            if(books[key].title===req.params.title)
+            {
+                resolve(res.send(books[key]));
+            }
+        }
+    });
+    p.then(()=>
+    {
+        console.log("Promise for Task 13 is resolved.");
+    })
+   });
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
     res.send(books[req.params.isbn].reviews);
